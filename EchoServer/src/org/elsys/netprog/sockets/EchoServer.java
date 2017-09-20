@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EchoServer {
 
@@ -26,11 +28,16 @@ public class EchoServer {
 		    while ((inputLine = in.readLine()) != null) {
 		    	try
 		    		{
-			    		String[] split = inputLine.split(" ");
-			    		int l = Integer.parseInt(split[0]);
-			    		int r = Integer.parseInt(split[2]);
+		    			Pattern inputPattern = Pattern.compile("^\\s*(\\d+)\\s*([\\+\\-\\*/])\\s*(\\d+)\\s*$");
+		    			Matcher matcher = inputPattern.matcher(inputLine);
+			    		if (!matcher.matches()) {
+			    			throw new Exception("Kofti vhod");
+			    		}
+		    			
+			    		int l = Integer.parseInt(matcher.group(1));
+			    		int r = Integer.parseInt(matcher.group(3));
 			    		int result = 0;
-			    		switch (split[1])
+			    		switch (matcher.group(2))
 			    		{
 			    		case "+":
 			    			result = l+r;
