@@ -14,7 +14,8 @@ public class EchoServer {
 		try {
 			serverSocket = new ServerSocket(10001);
 		    Socket clientSocket = serverSocket.accept();
-		    System.out.println("client connected from " + clientSocket.getInetAddress());
+		    System.out.println("client connected from " +
+		    		clientSocket.getInetAddress());
 		    PrintWriter out =
 		        new PrintWriter(clientSocket.getOutputStream(), true);
 		    BufferedReader in = new BufferedReader(
@@ -23,10 +24,37 @@ public class EchoServer {
 		    String inputLine;
 
 		    while ((inputLine = in.readLine()) != null) {
-		        out.println(inputLine);
-		        System.out.println(inputLine);
-		        if (inputLine.equals("exit"))
-		            break;
+		    	try
+		    		{
+			    		String[] split = inputLine.split(" ");
+			    		int l = Integer.parseInt(split[0]);
+			    		int r = Integer.parseInt(split[2]);
+			    		int result = 0;
+			    		switch (split[1])
+			    		{
+			    		case "+":
+			    			result = l+r;
+			    			break;
+			    		case "-":
+			    			result = l-r;
+			    			break;
+			    		case "/":
+			    			result = l/r;
+			    			break;
+			    		case "*":
+			    			result = l*r;
+			    			break;
+			    		default:
+			    			throw new Exception("Invalid operation");
+			    		}
+			        out.println(result);
+			        System.out.println(result);
+			        if (inputLine.equals("exit"))
+			            break;
+		        } catch (Throwable t) {
+		        		out.println(t.getMessage());
+		        		System.out.println(t.getMessage());
+		        }
 		    }
 		} catch (Throwable t) {
 			System.out.println(t.getMessage());
