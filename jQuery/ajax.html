@@ -4,16 +4,23 @@
 <script>
 $(document).ready(function() {
     var reload = function() {
-        $.ajax("http://api.icndb.com/jokes/random/10")
+        $.ajax("http://api.icndb.com/jokes/random/3")
             .done(function(result) {
                 $("#jokes").empty();
-                $(result.value).each(function (is) {
-                    $("#jokes").append("<tr><td>" + this.joke + "</td></tr>");
+                $(result.value).each(function () {
+                    $("#jokes").append("<tr><td>" + this.joke + "</td>"+
+                    "<td><button name='remove'>Remove</button></td></tr>");
+                });
+                $('button[name="remove"]').click(function() {
+                    $(this).parents("tr").remove();
+                    if ($("#jokes").children().length == 0) {
+                        reload();
+                    }
                 });
             });
     };
-
     $("#refresh").click(reload);
+    
     reload();
 });
 </script>
