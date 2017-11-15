@@ -1,0 +1,23 @@
+<html>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    var reload = function() {
+        $.ajax("http://api.icndb.com/jokes/random/10")
+            .done(function(result) {
+                $("#jokes").empty();
+                $(result.value).each(function (is) {
+                    $("#jokes").append("<tr><td>" + this.joke + "</td></tr>");
+                });
+            });
+    };
+
+    $("#refresh").click(reload);
+    reload();
+});
+</script>
+<table id="jokes"></table>
+<button id="refresh">Refresh</button>
+</body>
+</html>
