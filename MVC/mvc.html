@@ -1,0 +1,32 @@
+<html>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    var reload = function() {
+        $.ajax("http://api.icndb.com/jokes/random/3")
+            .done(function(result) {
+                //$("#jokes").empty();
+                $(result.value).each(function () {
+                    var template = $("#jokes").find("tr")[0];
+                    $(template).after(template.outerHTML.replace("__joke__", this.joke));
+                });
+                $('button[name="remove"]').click(function() {
+                    $(this).parents("tr").remove();
+                    if ($("#jokes").children().length == 0) {
+                        reload();
+                    }
+                });
+            });
+    };
+    $("#refresh").click(reload);
+    
+    reload();
+});
+</script>
+<table id="jokes">
+    <tr><td>__joke__</td><td><button name='remove'>Remove</button></td></tr>
+</table>
+<button id="refresh">Refresh</button>
+</body>
+</html>
