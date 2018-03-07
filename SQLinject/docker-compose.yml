@@ -1,0 +1,39 @@
+version: '3.3'
+
+services:
+   db:
+     image: mysql:5.7
+     volumes:
+       - dbdata2:/var/lib/mysql
+     restart: always
+     ports:
+       - 3306:3306
+     environment:
+       MYSQL_ROOT_PASSWORD: password
+       MYSQL_DATABASE: db
+       MYSQL_USER: test
+       MYSQL_PASSWORD: test
+
+   web:
+    image: webdevops/php-nginx
+    ports:
+        - "8080:80"
+    volumes:
+        - ./code:/var/code
+        #- ./site.conf:/etc/nginx/conf.d/default.conf
+    links:
+        - db
+    environment:
+        WEB_DOCUMENT_ROOT: /var/code
+   phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      links:
+          - db:db
+      ports:
+          - 8001:80
+      environment:
+          MYSQL_USER: test
+          MYSQL_PASSWORD: test
+          MYSQL_ROOT_PASSWORD: password
+volumes:
+    dbdata2:
