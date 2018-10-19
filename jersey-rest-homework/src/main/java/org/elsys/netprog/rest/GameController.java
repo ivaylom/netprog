@@ -25,7 +25,7 @@ public class GameController {
 	@Produces(value={MediaType.APPLICATION_JSON})
 	public Response startGame() throws URISyntaxException{
 		//TODO: Add your code here
-		return Response.created(new URI("/games")).entity(game.getGameId()).build();
+		return Response.created(new URI("/games")).build();
 	}
 	
 	@PUT
@@ -39,7 +39,7 @@ public class GameController {
 	@GET
 	@Path("/games")
 	@Produces(value={MediaType.APPLICATION_JSON})
-	public List<Game> getGames() {
+	public Response getGames() {
 		//TODO: Add your code here
 		return Response.status(404).build();
 	}
